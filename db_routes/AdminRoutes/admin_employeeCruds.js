@@ -1,6 +1,7 @@
 import { Router } from "express";
 import dotenv from "dotenv";
 import pool from "../../config/db.js";
+import { pool } from '../../config.js';
 import axios from "axios";
 //henter passord og bcrypt for admin/teamleder passord
 import bcrypt from "bcrypt";
@@ -15,6 +16,7 @@ import { getFullEmployeeById } from "../../Funksj_stotte/getFullEmpUpdatet.js";
 import { handleUserRoleChange } from "../../Funksj_stotte/roleManagerInUpdate.js";
 //middleware admin rute skal settes i router 
 import { authenticateToken, requireAdmin } from "../../AuthenticateUsers/AuthMiddleware.js";
+ 
 
 const router = Router();
 dotenv.config();

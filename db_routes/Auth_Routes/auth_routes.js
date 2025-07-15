@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import pool from "../../config/db.js";
 import dotenv from "dotenv";
-import { JWT_SECRET } from "../../config/config.js";
+import { JWT_SECRET, pool } from "../../config/config.js";
 
 dotenv.config();
 //istedenfor import Router

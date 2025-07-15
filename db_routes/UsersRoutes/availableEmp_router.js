@@ -2,6 +2,7 @@ import { application, json, Router } from "express";
 import dotenv from "dotenv";
 import pool from "../../config/db.js";
 //middleware
+import { pool } from '../../config.js';
 import { authenticateToken, requireTeamLeaderOrAdmin } from "../../AuthenticateUsers/AuthMiddleware.js";
 
 // denne ruteren/filen er ikke i bruk nå men kan videreutvikles senere 

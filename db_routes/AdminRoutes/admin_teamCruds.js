@@ -2,6 +2,7 @@
 import {Router} from 'express';
 import pool from   '../../config/db.js'
 //middleware admin
+import { pool } from '../../config.js';
 import { authenticateToken, requireAdmin } from '../../AuthenticateUsers/AuthMiddleware.js';
 
 const router = Router();

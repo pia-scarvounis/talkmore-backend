@@ -23,9 +23,11 @@ import  './cronjobs/deactivateEmployeesCron.js';
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:5173',  // juster om frontend kjører annet sted
+    origin: process.env.FRONTEND_ORIGIN || 'http://localhost:5173',
     credentials: true
-}));
+  }));
+
+  FRONTEND_ORIGIN='https://ansattoversikt-talkmore.netlify.app/';
 
 app.use(express.json());
 app.use(cookieParser());
@@ -64,6 +66,7 @@ app.use('/api/team', adminTeamCruds);
 app.use('/api/license', adminLicenseCruds);
 
 //starte serveren
-app.listen(3000, ()=>{
-    console.log('Server is running on port 3000')
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

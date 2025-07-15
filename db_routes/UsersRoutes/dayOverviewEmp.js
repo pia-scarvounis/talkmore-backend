@@ -1,6 +1,7 @@
 import { application, json, Router } from "express";
 import dotenv from "dotenv";
 import pool from "../../config/db.js";
+import { pool } from '../../config.js';
 
 //middleware for ruten enten admin eller teamleder(leserolle) 
 import { authenticateToken, requireTeamLeaderOrAdmin } from "../../AuthenticateUsers/AuthMiddleware.js";

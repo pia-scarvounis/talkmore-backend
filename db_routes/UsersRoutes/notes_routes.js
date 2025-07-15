@@ -1,8 +1,8 @@
 import { application, json, Router } from "express";
-import dBpool from "../../config/db.js";
 import dotenv from "dotenv";
 import pool from "../../config/db.js";
 //middleware
+import { pool } from '../../config.js';
 import { authenticateToken, requireTeamLeaderOrAdmin } from "../../AuthenticateUsers/AuthMiddleware.js";
 
 dotenv.config();

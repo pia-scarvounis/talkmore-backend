@@ -3,6 +3,8 @@ import { Router } from "express";
 import dotenv from "dotenv";
 import pool from "../../config/db.js";
 //middleware admin
+import { pool } from '../../config.js';
+ 
 import {
   authenticateToken,
   requireAdmin,
