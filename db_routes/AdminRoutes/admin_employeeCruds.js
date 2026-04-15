@@ -1,11 +1,9 @@
 import { Router } from "express";
 import dotenv from "dotenv";
 import pool from "../../config/db.js";
-import { pool } from '../../config.js';
 import axios from "axios";
 //henter passord og bcrypt for admin/teamleder passord
 import bcrypt from "bcrypt";
-import { DEFAULT_TEST_PASSWORD } from "../../config/config.js";
 //API genesys
 import platformClient from "purecloud-platform-client-v2";
 //Token for API genesys
@@ -17,6 +15,10 @@ import { handleUserRoleChange } from "../../Funksj_stotte/roleManagerInUpdate.js
 //middleware admin rute skal settes i router 
 import { authenticateToken, requireAdmin } from "../../AuthenticateUsers/AuthMiddleware.js";
  
+
+dotenv.config();
+
+const DEFAULT_TEST_PASSWORD = process.env.DEFAULT_TEST_PASSWORD;
 
 const router = Router();
 dotenv.config();

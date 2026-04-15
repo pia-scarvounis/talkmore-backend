@@ -1,5 +1,8 @@
 import bcrypt from "bcrypt";
-import { DEFAULT_TEST_PASSWORD } from "../config/config.js";
+import dotenv from "dotenv";
+dotenv.config();
+
+const DEFAULT_TEST_PASSWORD = process.env.DEFAULT_TEST_PASSWORD;
 
 //Denne filen inneholder logikk og sjekker for oppdatering av ansatt / støttefunksjon
 //Når en admin endrer en ansatt fra Admin/Teamleder eller til Admin/Teamleder

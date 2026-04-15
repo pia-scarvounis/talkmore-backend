@@ -6,11 +6,14 @@ import mysql from 'mysql2/promise';
 dotenv.config();
 
 const pool = mysql.createPool({
-    host: 'localhost',
+    host: "mysql-3a707312-talkmore-ansattoversikt.k.aivencloud.com",
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE_NAME,
-    port: 3306,
+    port: 19713,
+    ssl: {
+    rejectUnauthorized: false,
+  },
 
 });
 

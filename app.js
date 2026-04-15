@@ -1,71 +1,59 @@
-import express from 'express';
-import cookieParser from 'cookie-parser';
-import employeeRoutes from './db_routes/UsersRoutes/getEmployees_routes.js';
-import noteRoutes from './db_routes/UsersRoutes/notes_routes.js';
-import dayOverviewEmployees from './db_routes/UsersRoutes/dayOverviewEmp.js';
-import availableEmployees from './db_routes/UsersRoutes/availableEmp_router.js';
-import employeeHistory from './db_routes/UsersRoutes/getEmpHistory_router.js';
-import adminEmployeeCruds from './db_routes/AdminRoutes/admin_employeeCruds.js';
-import metaDataGet from './db_routes/UsersRoutes/getMetaData_routes.js';
-import cors from 'cors';
-import authRoutes from './db_routes/Auth_Routes/auth_routes.js'
-import adminHistoryCrud from './db_routes/AdminRoutes/admin_empHistoryRoutes.js';
-import adminTeamCruds from './db_routes/AdminRoutes/admin_teamCruds.js';
-import adminLicenseCruds from './db_routes/AdminRoutes/admin_licenseCruds.js';
-//cron
-console.log('[APP] Starter backend og prøver å importere cron-jobber...');
-import  './cronjobs/syncEmployeesCron.js';
-import  './cronjobs/deactivateEmployeesCron.js';
+import express from "express";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import cors from "cors";
 
+import employeeRoutes from "./db_routes/UsersRoutes/getEmployees_routes.js";
+import noteRoutes from "./db_routes/UsersRoutes/notes_routes.js";
+import dayOverviewEmployees from "./db_routes/UsersRoutes/dayOverviewEmp.js";
+import availableEmployees from "./db_routes/UsersRoutes/availableEmp_router.js";
+import employeeHistory from "./db_routes/UsersRoutes/getEmpHistory_router.js";
+import metaDataGet from "./db_routes/UsersRoutes/getMetaData_routes.js";
 
-//importere rutere for admin og begge(teamleder og admin)
+import authRoutes from "./db_routes/Auth_Routes/auth_routes.js";
+
+import adminEmployeeCruds from "./db_routes/AdminRoutes/admin_employeeCruds.js";
+import adminHistoryCrud from "./db_routes/AdminRoutes/admin_empHistoryRoutes.js";
+import adminTeamCruds from "./db_routes/AdminRoutes/admin_teamCruds.js";
+import adminLicenseCruds from "./db_routes/AdminRoutes/admin_licenseCruds.js";
+
+// Cron
+console.log("[APP] Starter backend og prøver å importere cron-jobber...");
+import "./cronjobs/syncEmployeesCron.js";
+import "./cronjobs/deactivateEmployeesCron.js";
+
+dotenv.config();
 
 const app = express();
 
-app.use(cors({
-    origin: process.env.FRONTEND_ORIGIN || 'http://localhost:5173',
-    credentials: true
-  }));
-
-  FRONTEND_ORIGIN='https://ansattoversikt-talkmore.netlify.app/';
+app.use(
+  cors({
+    origin: process.env.FRONTEND_ORIGIN || "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(cookieParser());
 
-//ruter for innlogging 
-app.use('/api/auth', authRoutes);
+// Innlogging
+app.use("/api/auth", authRoutes);
 
+// Ruter for admin + teamleder
+app.use("/api/employees", employeeRoutes);
+app.use("/api/note", noteRoutes);
+app.use("/api", dayOverviewEmployees);
+app.use("/api/availableemployees", availableEmployees);
+app.use("/api/employee/history", employeeHistory);
+app.use("/api/metaData", metaDataGet);
 
-//rutere for alle brukere av verktøyet "admin" + "teamledere" skal se eller gjøre
-//rutere for å hente og vise alle ansatte
-app.use('/api/employees', employeeRoutes);
+// Kun admin
+app.use("/api/employee", adminEmployeeCruds);
+app.use("/api/history", adminHistoryCrud);
+app.use("/api/team", adminTeamCruds);
+app.use("/api/license", adminLicenseCruds);
 
-//ruter for notes CRUDS
-app.use('/api/note', noteRoutes );
-
-//Rute for hente dagoversikt ansatte som ikke har permisjon eller har sluttet + tot FTE
-app.use('/api', dayOverviewEmployees);
-
-//rute for å hente tilgjengelige ansatte for dagen som er logget inn(ikke bruk nå)(dato)
-app.use('/api/availableemployees', availableEmployees);
-
-//hente og vise historikken per ansatt
-app.use('/api/employee/history', employeeHistory);
-
-//Hente (get) rutere for team, avdelinger, og stillinger fra databasen
-app.use('/api/metaData', metaDataGet)
-
-//rutere kun for Admin
-//rutere for admin: post, put employees
-app.use('/api/employee', adminEmployeeCruds);
-//endre historikk felter for en ansatt
-app.use('/api/history', adminHistoryCrud)
-//rutere for adminstrere team POST, PUT og DELETE
-app.use('/api/team', adminTeamCruds);
-//rutere for å adminstrere lisenser POST, PUT, DELETE
-app.use('/api/license', adminLicenseCruds);
-
-//starte serveren
+// Starte server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
